@@ -12,7 +12,7 @@ export default function TabsLayout() {
           options={{ 
             headerTitle: 'For you', 
             tabBarIcon: ({ color }) => (
-              <FontAwesome name="home" size={24} color={color} />
+              <FontAwesome name="home" size={26} color={color} />
             ),
           }}
         />
@@ -22,7 +22,7 @@ export default function TabsLayout() {
           options={{ 
             headerTitle: 'Create post', 
             tabBarIcon: ({ color }) => (
-              <FontAwesome name="plus-square-o" size={24} color={color} />
+              <FontAwesome name="plus-square-o" size={26} color={color} />
             ),
           }}
         />
@@ -36,6 +36,6 @@ export default function TabsLayout() {
             ),
           }}
         />
-        
+
     </Tabs>);
 }
