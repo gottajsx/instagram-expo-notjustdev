@@ -28,7 +28,9 @@ export default function PostListItem({ post }) {
                     cldImg={avatar} 
                     className='w-12 aspect-square rounded-full'
                 />
-                <Text className="font-semibold">{post.user.username}</Text>
+                <Text className="font-semibold">
+                    {post.user.username || 'New user'}
+                </Text>
             </View>
 
             {/* Content */}
