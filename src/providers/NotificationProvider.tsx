@@ -107,3 +107,5 @@ async function registerForPushNotificationsAsync() {
     // handleRegistrationError('Must use physical device for push notifications');
   }
 }
+
+

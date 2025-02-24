@@ -58,11 +58,9 @@ export default function ProfileScreen() {
 
     const { data, error } = await supabase
       .from('profiles')
-      .update(updatedProfile)
-      .eq('id', user.id);
+      .update(updatedProfile);
 
     if (error) {
-      console.log(error);
       Alert.alert('Failed to update profile');
     }
   };

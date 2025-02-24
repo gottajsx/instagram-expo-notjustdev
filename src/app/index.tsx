@@ -1,6 +1,6 @@
-import { Redirect } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { Redirect } from 'expo-router';
+import { Text } from 'react-native';
 
-export default function Home() { 
-    return <Redirect href="/(auth)" />;
+export default function Home() {
+  return <Redirect href="/(auth)" />;
 }
