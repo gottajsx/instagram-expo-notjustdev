@@ -6,41 +6,38 @@ import { uploadImage } from '~/src/lib/cloudinary';
 import { supabase } from '~/src/lib/supabase';
 import { useAuth } from '~/src/providers/AuthProvider';
 import { router } from 'expo-router';
-import { ResizeMode, Video } from 'expo-av';
 
 export default function CreatePost() {
   const [caption, setCaption] = useState('');
-  const [media, setMedia] = useState<string | null>(null);
-  const [mediaType, setMediaType] = useState<'video' | 'image' | undefined>();
+  const [image, setImage] = useState<string | null>(null);
 
   const { session } = useAuth();
 
   useEffect(() => {
-    if (!media) {
-      pickMedia();
+    if (!image) {
+      pickImage();
     }
-  }, [media]);
+  }, [image]);
 
-  const pickMedia = async () => {
+  const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.5,
     });
 
     if (!result.canceled) {
-      setMedia(result.assets[0].uri);
-      setMediaType(result.assets[0].type);
+      setImage(result.assets[0].uri);
     }
   };
 
   const createPost = async () => {
-    if (!media) {
+    if (!image) {
       return;
     }
-    const response = await uploadImage(media);
+    const response = await uploadImage(image);
     // Save the post in database
     console.log('image id: ', response?.public_id);
 
@@ -51,7 +48,6 @@ export default function CreatePost() {
           caption,
           image: response?.public_id,
           user_id: session?.user.id,
-          media_type: mediaType,
         },
       ])
       .select();
@@ -62,28 +58,16 @@ export default function CreatePost() {
   return (
     <View className="p-3 items-center flex-1">
       {/* Image picker */}
-      {!media ? (
-        <View className="w-52 aspect-[3/4] rounded-lg bg-slate-300" />
-      ) : mediaType === 'image' ? (
+      {image ? (
         <Image
-          source={{ uri: media }}
+          source={{ uri: image }}
           className="w-52 aspect-[3/4] rounded-lg bg-slate-300"
         />
       ) : (
-        <Video
-          className="w-52 aspect-[3/4] rounded-lg bg-slate-300"
-          style={{ width: '100%', aspectRatio: 16 / 9 }}
-          source={{
-            uri: media,
-          }}
-          useNativeControls
-          resizeMode={ResizeMode.CONTAIN}
-          isLooping
-          shouldPlay
-        />
+        <View className="w-52 aspect-[3/4] rounded-lg bg-slate-300" />
       )}
 
-      <Text onPress={pickMedia} className="text-blue-500 font-semibold m-5">
+      <Text onPress={pickImage} className="text-blue-500 font-semibold m-5">
         Change
       </Text>
 
