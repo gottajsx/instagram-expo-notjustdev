@@ -1,15 +1,18 @@
 import { useWindowDimensions } from 'react-native';
+import { useMemo } from 'react';
 import { cld } from '../lib/cloudinary';
 import { thumbnail, scale } from '@cloudinary/url-gen/actions/resize';
 import { AdvancedImage } from 'cloudinary-react-native';
 import { ResizeMode, Video } from 'expo-av';
 
 export default function PostContent({ post }) {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
+  const roundedWidth = useMemo(() => Math.round(width / 2) * 2, [width]);
+  const roundedHeight = useMemo(() => Math.round(height / 2) * 2, [height]);
 
   if (post.media_type === 'image') {
     const image = cld.image(post.image);
-    image.resize(thumbnail().width(width).height(width));
+    image.resize(thumbnail().width(roundedWidth).height(roundedHeight));
 
     return <AdvancedImage cldImg={image} className="w-full aspect-[4/3]" />;
   }
